@@ -1,9 +1,9 @@
 
-const requestedProductsExist = async (requestedProducts: ProductInCartPostBody[], allProducts: DBProduct[]) => {
-  const productsFound = new Map<string, boolean>();
+const requestedProductsExist = (requestedProducts: ProductInCartPostBody[], allProducts: DBProduct[]) => {
+  const productsFound = new Map<number, boolean>();
 
   requestedProducts.forEach((product) => {
-    productsFound.set(product.productId, false);
+    productsFound.set(parseInt(product.productId), false);
   })
 
   allProducts.forEach((product) => {

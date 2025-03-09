@@ -2,6 +2,9 @@ import { getTraeloYaTariff, getUderTariff } from "./tariffGetters";
 
 const COURIERS = ["TraeloYa", "Uder"]
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'; // No recomendado en producción
+
+
 const getCheapestTariff = async (cart: Cart, printResponses: boolean = true) => {
   let cheapestTariff: Tariff = {
     courier: null,
@@ -10,7 +13,13 @@ const getCheapestTariff = async (cart: Cart, printResponses: boolean = true) => 
 
   for (let courier of COURIERS) {
 
-    const tariff = await getTariff(courier, cart, printResponses)
+    let tariff: number | null;
+
+    try {
+      tariff = await getTariff(courier, cart, printResponses)
+    } catch (error) {
+      tariff = null;
+    }
 
     if (tariff) {
 

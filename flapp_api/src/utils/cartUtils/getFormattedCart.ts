@@ -1,14 +1,15 @@
 
 export const getFormattedCart = (cart: CartPostBody, productsInDataBase: DBProduct[]): Cart => {
 
-  const productsInCart = new Map<string, ProductInCart>();
+  const productsInCart = new Map<number, ProductInCart>();
 
   cart.products.forEach((requiredProduct) => {
+    const parsedId = parseInt(requiredProduct.productId)
     const productInCart = {
-      id: requiredProduct.productId,
+      id: parsedId,
       title: "",
       price: requiredProduct.price,
-      quantity: requiredProduct.number,
+      quantity: requiredProduct.quantity,
       discount: requiredProduct.discount,
       stock: 0,
       realStock: 0,
@@ -19,7 +20,7 @@ export const getFormattedCart = (cart: CartPostBody, productsInDataBase: DBProdu
         depth: 0,
       }
     }
-    productsInCart.set(requiredProduct.productId, productInCart);
+    productsInCart.set(parsedId, productInCart);
   })
 
   productsInDataBase.forEach((product) => {
@@ -30,10 +31,11 @@ export const getFormattedCart = (cart: CartPostBody, productsInDataBase: DBProdu
 
       productsInCart.set(product.id, {
         ...productInCart,
+        title: product.title,
         stock: product.stock,
         realStock: realStock,
-        title: product.title,
-        rating: product.rating
+        rating: product.rating,
+        dimensions: product.dimensions
       });
     }
   })

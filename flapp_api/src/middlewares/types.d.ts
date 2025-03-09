@@ -6,6 +6,6 @@ type CartPostBody = {
 type ProductInCartPostBody = {
   productId: string,
   price: number,
-  number: number,
+  quantity: number,
   discount: number,
 }

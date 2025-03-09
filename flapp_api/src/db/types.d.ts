@@ -7,7 +7,7 @@ type ProductsResponse = {
 }
 
 type DBProduct = {
-  id: string,
+  id: number,
   title: string,
   rating: number,
   stock: number,

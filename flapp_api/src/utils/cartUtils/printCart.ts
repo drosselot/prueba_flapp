@@ -29,7 +29,7 @@ const printProductsInCart = (formattedProducts: ProductInCart[]) => {
     console.log(`Quantity: ${product.quantity}`)
     console.log(`Stock: ${product.stock}`)
     console.log(`Rating: ${product.rating}`)
-    console.log(`Real rating: ${product.realStock}`)
+    console.log(`Real Stock: ${product.realStock}`)
   })
 }
 

@@ -4,18 +4,19 @@ import { getAllProducts } from "../db/dbRequests";
 import { getFormattedCart } from "../utils/cartUtils/getFormattedCart";
 import printCart from "../utils/cartUtils/printCart";
 import requestedProductsExist from "../utils/cartUtils/requestedProductsExist";
-import canSatisfySolicitedQuantity from "../utils/cartUtils/canSatisfySolicitedQuantity";
-import getCheapestTariff from "../pricing/getCheapestTariff";
+import getCheapestTariff from "../utils/traifiers/getCheapestTariff";
 
 const cartRouter = Router();
 
 cartRouter.post("/", validateCartPost, async (request: Request, response: Response) => {
 
+  const GET_PRODUCTS_PAGINATION = 10;
+
   const requestCart = request.body as CartPostBody;
-  const allProducts = await getAllProducts(10);
+  const allProducts = await getAllProducts(GET_PRODUCTS_PAGINATION);
 
   if (!requestedProductsExist(requestCart.products, allProducts)) {
-    response.status(404).send("Some products in the cart where not found");
+    response.status(400).send("Some products in the cart were not found");
     return;
   }
 
@@ -23,7 +24,7 @@ cartRouter.post("/", validateCartPost, async (request: Request, response: Respon
   printCart(formattedCart);
 
 
-  if (!(canSatisfySolicitedQuantity(formattedCart.products))) {
+  if (!formattedCart.products.every((product) => product.realStock >= product.quantity)) {
     response.status(400).send("Some products in the cart do not have enough stock");
     return;
   }
