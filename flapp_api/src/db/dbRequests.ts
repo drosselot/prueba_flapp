@@ -1,12 +1,20 @@
-export const getAllProducts = async (pagination: number, current: number = 0): Promise<DBProduct[]> => {
+export const getAllProducts = async (pagination: number): Promise<DBProduct[]> => {
 
-  const productsResponse = await fetch(`https://dummyjson.com/products?limit=${pagination}&skip=${current}&select=id,title,price,stock,rating,dimensions`);
-  const typedProductsResponse = (await productsResponse.json()) as ProductsResponse;
+  const firstProductsResponse = await fetch(`https://dummyjson.com/products?limit=${pagination}&skip=0&select=id,title,price,stock,rating,dimensions`);
+  const typedFirstProductsResponse = (await firstProductsResponse.json()) as ProductsResponse;
 
-  if (current + pagination >= typedProductsResponse.total) {
-    return typedProductsResponse.products;
+  const responsesPromises: Promise<ProductsResponse>[] = [];
+
+  for (let current = pagination; current <= typedFirstProductsResponse.total; current += pagination) {
+    responsesPromises.push(fetch(`https://dummyjson.com/products?limit=${pagination}&skip=${current}&select=id,title,price,stock,rating,dimensions`)
+                            .then((response) => response.json()))
   }
 
-  const nextProducts = await getAllProducts(pagination, current + pagination);
-  return typedProductsResponse.products.concat(nextProducts);
+  const resolvedResponses = await Promise.all(responsesPromises);
+
+  let products = typedFirstProductsResponse.products;
+  resolvedResponses.forEach((response) => {
+    products = products.concat(response.products)
+  })
+  return products;
 }
