@@ -5,6 +5,8 @@ import { isCustomerData, isProduct } from "../utils/typeUtils/typeCheck";
 export const validateCartPost = (request: Request, response: Response, next: NextFunction) => {
   const cart = request.body;
 
+  console.log(cart)
+
   if (!cart.products) {
     response.status(400).send({ message: "Missing products field" });
     return;
