@@ -1,5 +1,5 @@
 'use client'
-import { SetShoppingCartContext, ShoppingCart, ShoppingCartContext } from "@/contexts/ShoppingCartContext";
+import { SetShoppingCartContext, ShoppingCartContext } from "@/contexts/ShoppingCartContext";
 import Image from "next/image";
 import { useContext } from "react";
 import LogoAzul from "../../public/LogoAzul.png"
@@ -7,6 +7,7 @@ import getRandomNaturalNumber from "@/utils/getRandomNumber";
 import ShoppingCartProducts from "@/components/ShoppingCartProducts";
 import { useRouter } from "next/navigation";
 import CustomButton from "@/components/CustomButton";
+import { getShoppingCart } from "@/apis/dummyJsonApi";
 
 const NUMBER_OF_CARTS = 50
 
@@ -19,11 +20,9 @@ export default function Home() {
 
   const getRandomCart = async () => {
     const shoppingCartId = getRandomNaturalNumber(NUMBER_OF_CARTS);
+    const shoppingCart = await getShoppingCart(shoppingCartId);
 
-    const shoppingCartResponse = await fetch('https://dummyjson.com/carts/' + shoppingCartId)
-    const jsonShoppingCart = (await shoppingCartResponse.json()) as ShoppingCart;
-
-    setShoppingCart(jsonShoppingCart);
+    setShoppingCart(shoppingCart);
   }
 
   return (

@@ -1,9 +1,12 @@
 'use client'
+import { CustomerData, getTariff } from "@/apis/backendApi";
 import CustomButton from "@/components/CustomButton";
 import ShoppingCartProducts from "@/components/ShoppingCartProducts";
 import { SetShoppingCartContext, ShoppingCartContext } from "@/contexts/ShoppingCartContext";
+import formatProductsForBackend from "@/utils/formatProductsForBackend";
 import { useRouter } from "next/navigation";
 import { FormEvent, useContext, useState } from "react";
+import { formatNumberToChilean } from "@/utils/formatNumber";
 
 
 export default function Checkout() {
@@ -15,29 +18,34 @@ export default function Checkout() {
 
   const [formMessage, setFormMessage] = useState("");
 
+
   const handleGetTariffs = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const formData = new FormData(event.currentTarget);
-
-    const jsonFormData = Object.fromEntries(formData.entries());
-
-    if (!jsonFormData.name || !jsonFormData.shipping_street || !jsonFormData.commune || !jsonFormData.phone) {
-      setFormMessage("Falta rellenar algún campo.")
-    } else {
-      setFormMessage("Cotizando...")
-      const apiResponse = await fetch(process.env.NEXT_PUBLIC_API_URL + "/cart" || "", {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          customer_data: jsonFormData,
-          products: shoppingCart?.products || []
-        })
-      })
-
-      console.log(await apiResponse.json());
+    if (!shoppingCart || shoppingCart.products.length == 0) {
+      setFormMessage("Es necesario agregar productos al carrito");
+      return;
     }
 
+    const formData = new FormData(event.currentTarget);
+    const jsonFormData = Object.fromEntries(formData.entries()) as CustomerData;
+    if (!jsonFormData.name || !jsonFormData.shipping_street || !jsonFormData.commune || !jsonFormData.phone) {
+      setFormMessage("Falta rellenar algún campo.")
+      return;
+    }
+
+    setFormMessage("Cotizando...")
+    try {
+      const getTariffResponse = await getTariff({
+        customer_data: jsonFormData,
+        products: formatProductsForBackend(shoppingCart.products)
+      })
+      setFormMessage(`${getTariffResponse.courier} ⚡️ - $ ${formatNumberToChilean(getTariffResponse.price)}`)
+    } catch (error) {
+      if (error instanceof Error)
+      console.log(error.message);
+      setFormMessage("No hay envíos disponibles :(")
+    }
   }
 
   const handleCleanCart = () => {
@@ -56,24 +64,33 @@ export default function Checkout() {
           <ShoppingCartProducts/>
         </div>
         <div className="w-1/2 p-10">
-          <form className="flex flex-row flex-wrap rounded-lg shadow-lg shadow-flapp-blue/30 bg-flapp-blue text-white p-5 justify-center" method="post" onSubmit={handleGetTariffs}>
-            <h1 className="text-2xl w-full">Información de envío</h1>
-            <CustomInput placeholder="Nombre" inputName="name" divClassName="w-full"/>
-            <CustomInput placeholder="Dirección" inputName="shipping_street" divClassName="w-full"/>
-            <div className="w-full flex">
-              <CustomInput placeholder="Comuna" inputName="commune"/>
-              <CustomInput placeholder="Teléfono" inputName="phone"/>
-            </div>
-            <div className="mt-5 flex flex-col justify-center w-full">
-              <p className="text-white h-10 text-center">{formMessage}</p>
-                <CustomButton text="Cotizar Despacho" type="submit"/>
-            </div>
-
-          </form>
+          <GetTariffForm formMessage={formMessage} handleGetTariffs={handleGetTariffs}/>
         </div>
       </div>
 
     </div>
+  )
+}
+
+const GetTariffForm = (props: {formMessage: string, handleGetTariffs: (event: FormEvent<HTMLFormElement>) => void}) => {
+
+  const {formMessage, handleGetTariffs} = props
+
+  return (
+    <form className="flex flex-row flex-wrap rounded-lg shadow-lg shadow-flapp-blue/30 bg-flapp-blue text-white p-5 justify-center" method="post" onSubmit={handleGetTariffs}>
+      <h1 className="text-2xl w-full">Información de envío</h1>
+      <CustomInput placeholder="Nombre" inputName="name" divClassName="w-full"/>
+      <CustomInput placeholder="Dirección" inputName="shipping_street" divClassName="w-full"/>
+      <div className="w-full flex">
+        <CustomInput placeholder="Comuna" inputName="commune"/>
+        <CustomInput placeholder="Teléfono" inputName="phone"/>
+      </div>
+      <div className="mt-5 flex flex-col justify-center w-full">
+        <p className="text-white h-10 text-center">{formMessage}</p>
+          <CustomButton text="Cotizar Despacho" type="submit"/>
+      </div>
+
+    </form>
   )
 }
 
