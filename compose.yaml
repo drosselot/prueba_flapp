@@ -5,9 +5,9 @@ services:
     command: sh -c "npm install && npm run build && npm run start"
     ports:
       - ${APP_PORT}:3000
-    working_dir: /app
+    working_dir: /flapp/app
     volumes:
-      - ./flapp_app:/app
+      - ./flapp_app:/flapp/app
     environment:
       - NEXT_PUBLIC_API_URL=${APP_NEXT_PUBLIC_API_URL}
 
@@ -16,9 +16,9 @@ services:
     command: sh -c "npm install && npm run build && npm run start"
     ports:
       - ${API_PORT}:3001
-    working_dir: /api
+    working_dir: /flapp/api
     volumes:
-      - ./flapp_api:/api
+      - ./flapp_api:/flapp/api
     environment:
       - TRAELO_YA_API_KEY=${API_TRAELO_YA_API_KEY}
       - UDER_API_KEY=${API_UDER_API_KEY}
