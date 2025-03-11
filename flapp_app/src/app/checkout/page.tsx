@@ -58,15 +58,17 @@ export default function Checkout() {
   return (
     <div className="flex flex-col mb-30 items-center">
       <div className="w-1/2 flex mt-10 justify-around">
-        <CustomButton text="Limpiar Carrito" onClick={handleCleanCart} secondary />
         <CustomButton text="Volver" onClick={() => router.push("/")} />
+        <CustomButton text="Limpiar Carrito" onClick={handleCleanCart} secondary />
       </div>
       <div className="flex flex-row justify-around mx-10">
-        <div className="w-1/2">
-          <ShoppingCartProducts/>
-        </div>
-        <div className="w-1/2 p-10">
+
+        <div className="w-3/5 p-10">
           <GetTariffForm formMessage={formMessage} handleGetTariffs={handleGetTariffs}/>
+        </div>
+
+        <div className="w-2/5 ">
+          <ShoppingCartProducts/>
         </div>
       </div>
 
@@ -107,7 +109,8 @@ const CustomInput = (props: {placeholder: string, inputName: string, divClassNam
   const {placeholder: labelText, inputName, divClassName, inputClassName} = props
 
   return (
-    <div className={"text-lg flex m-2 w-full " + divClassName}>
+    <div className={"text-lg flex m-2 w-full flex-col " + divClassName}>
+        <p className="font-bold text-sm mt-1">{labelText}</p>
         <input
           placeholder={"* " + labelText}
           className={"border p-1 pl-3 w-full text-sm placeholder:opacity-80 placeholder:text-white placeholder:text-xs " + inputClassName}

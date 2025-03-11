@@ -7,17 +7,14 @@ import { motion } from "motion/react";
 import LoadingIndicator from "./LoadingIndicator";
 
 
-const ShoppingCartProducts = (props: {maxHeight?: number}) => {
-  const {maxHeight} = props;
+const ShoppingCartProducts = () => {
 
   const shoppingCart = useContext(ShoppingCartContext);
-
-  const containerClassName = "flex flex-col mt-10 rounded-md p-5 shadow-lg border border-neutral-200 " + (maxHeight && (` overflow-y-scroll h-${maxHeight} `))
 
   const loadingCart = shoppingCart == null;
 
   return (
-    <motion.div initial={{scale: 0}} animate={{scale: 1}} className={containerClassName}>
+    <motion.div initial={{scale: 0}} animate={{scale: 1}} className={"flex flex-col mt-10 rounded-md p-5 shadow-lg border border-neutral-200 mb-20"}>
       {
         loadingCart ? (
           <div className="flex flex-row">

@@ -7,7 +7,7 @@ import getRandomNaturalNumber from "@/utils/getRandomNumber";
 import ShoppingCartProducts from "@/components/ShoppingCartProducts";
 import { useRouter } from "next/navigation";
 import CustomButton from "@/components/CustomButton";
-import { getShoppingCart } from "@/apis/dummyJsonApi";
+import { getShoppingCartInCHileanPesos } from "@/apis/dummyJsonApi";
 
 const NUMBER_OF_CARTS = 50
 
@@ -23,7 +23,7 @@ export default function Home() {
   const getRandomCart = async () => {
     setShowCart(true);
     const shoppingCartId = getRandomNaturalNumber(NUMBER_OF_CARTS);
-    const shoppingCart = await getShoppingCart(shoppingCartId);
+    const shoppingCart = await getShoppingCartInCHileanPesos(shoppingCartId);
 
     setShoppingCart(shoppingCart);
   }
@@ -34,18 +34,19 @@ export default function Home() {
         <Image className="object-contain" fill alt={"flapp logo"} src={LogoAzul}/>
       </header>
 
-      <div className="w-1/3">
-        {
-          showCart && <ShoppingCartProducts maxHeight={130} />
-        }
-      </div>
-
-      <div className="w-full flex justify-center pb-50">
+      <div className="w-full flex justify-center">
         <div className="w-1/2 flex justify-around mt-10">
           <CustomButton secondary={false} onClick={getRandomCart} text="Crear Carrito" disabled={shoppingCart != null}/>
           <CustomButton secondary onClick={() => { router.push('/checkout') }} text="Finalizar Compra" disabled={!shoppingCart}/>
         </div>
       </div>
+
+      <div className="w-1/3">
+        {
+          showCart && <ShoppingCartProducts />
+        }
+      </div>
+
     </div>
   );
 }

@@ -5,8 +5,7 @@ const formatProductsForBackend = (products: Product[]) => {
     productId: String(product.id),
     price: product.price,
     quantity: product.quantity,
-    discount: product.discountedTotal
-
+    discount: product.price * (product.discountPercentage / 100)
   }))
 }
 
