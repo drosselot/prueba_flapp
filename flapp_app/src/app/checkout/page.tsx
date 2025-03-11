@@ -7,7 +7,9 @@ import formatProductsForBackend from "@/utils/formatProductsForBackend";
 import { useRouter } from "next/navigation";
 import { FormEvent, useContext, useState } from "react";
 import { formatNumberToChilean } from "@/utils/formatNumber";
+import LoadingIndicator from "@/components/LoadingIndicator";
 
+const LOADING_TARIFFS_MESSAGE = "Cotizando envío"
 
 export default function Checkout() {
 
@@ -34,7 +36,7 @@ export default function Checkout() {
       return;
     }
 
-    setFormMessage("Cotizando...")
+    setFormMessage(LOADING_TARIFFS_MESSAGE)
     try {
       const getTariffResponse = await getTariff({
         customer_data: jsonFormData,
@@ -86,8 +88,15 @@ const GetTariffForm = (props: {formMessage: string, handleGetTariffs: (event: Fo
         <CustomInput placeholder="Teléfono" inputName="phone"/>
       </div>
       <div className="mt-5 flex flex-col justify-center w-full">
-        <p className="text-white h-10 text-center">{formMessage}</p>
-          <CustomButton text="Cotizar Despacho" type="submit"/>
+        <div className="flex flex-row justify-center">
+          <p className="text-white h-10 text-center">{formMessage}</p>
+          {
+            formMessage === LOADING_TARIFFS_MESSAGE && (
+              <LoadingIndicator/>
+            )
+          }
+        </div>
+        <CustomButton text="Cotizar Despacho" type="submit"/>
       </div>
 
     </form>

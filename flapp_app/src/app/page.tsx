@@ -1,7 +1,7 @@
 'use client'
 import { SetShoppingCartContext, ShoppingCartContext } from "@/contexts/ShoppingCartContext";
 import Image from "next/image";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import LogoAzul from "../../public/LogoAzul.png"
 import getRandomNaturalNumber from "@/utils/getRandomNumber";
 import ShoppingCartProducts from "@/components/ShoppingCartProducts";
@@ -16,9 +16,12 @@ export default function Home() {
   const shoppingCart = useContext(ShoppingCartContext);
   const setShoppingCart = useContext(SetShoppingCartContext);
 
+  const [showCart, setShowCart] = useState(shoppingCart != null);
+
   const router = useRouter();
 
   const getRandomCart = async () => {
+    setShowCart(true);
     const shoppingCartId = getRandomNaturalNumber(NUMBER_OF_CARTS);
     const shoppingCart = await getShoppingCart(shoppingCartId);
 
@@ -33,7 +36,7 @@ export default function Home() {
 
       <div className="w-1/3">
         {
-          shoppingCart && <ShoppingCartProducts maxHeight={130} />
+          showCart && <ShoppingCartProducts maxHeight={130} />
         }
       </div>
 

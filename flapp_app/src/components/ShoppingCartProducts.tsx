@@ -3,6 +3,8 @@ import { Product, ShoppingCartContext } from "@/contexts/ShoppingCartContext"
 import { formatNumberToChilean } from "@/utils/formatNumber";
 import Image from "next/image";
 import { useContext } from "react";
+import { motion } from "motion/react";
+import LoadingIndicator from "./LoadingIndicator";
 
 
 const ShoppingCartProducts = (props: {maxHeight?: number}) => {
@@ -10,14 +12,25 @@ const ShoppingCartProducts = (props: {maxHeight?: number}) => {
 
   const shoppingCart = useContext(ShoppingCartContext);
 
+  const containerClassName = "flex flex-col mt-10 rounded-md p-5 shadow-lg border border-neutral-200 " + (maxHeight && (` overflow-y-scroll h-${maxHeight} `))
+
+  const loadingCart = shoppingCart == null;
+
   return (
-    <div className={"flex flex-col mt-10 rounded-md p-5 shadow-lg border border-neutral-200 " + (maxHeight && (" overflow-y-scroll h-130 "))}>
+    <motion.div initial={{scale: 0}} animate={{scale: 1}} className={containerClassName}>
       {
-        shoppingCart?.products.map((product) => (
-          <ProductInShoppingCart key={product.id} product={product}/>
-        ))
+        loadingCart ? (
+          <div className="flex flex-row">
+            <p>Loading cart...</p>
+            <LoadingIndicator/>
+          </div>
+        ) : (
+          shoppingCart?.products.map((product) => (
+            <ProductInShoppingCart key={product.id} product={product}/>
+          ))
+        )
       }
-    </div>
+    </motion.div>
   )
 }
 

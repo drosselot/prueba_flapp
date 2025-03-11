@@ -1,7 +1,6 @@
 import express from "express";
 import apiRouter from "./apiRouter";
 import cors from "cors";
-require('dotenv').config();
 
 const app = express()
 
@@ -11,7 +10,7 @@ app.use(express.json());
 
 app.use("/api", apiRouter);
 
-const port = process.env.PORT || 1414;
+const port = 3001;
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Flapp api listening on port ${port}`)
 })
