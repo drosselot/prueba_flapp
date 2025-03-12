@@ -34,19 +34,19 @@ export default function Home() {
         <Image className="object-contain" fill alt={"flapp logo"} src={LogoAzul}/>
       </header>
 
+
+      <div className="w-1/3">
+        {
+          showCart && <ShoppingCartProducts fixedHeight />
+        }
+      </div>
+
       <div className="w-full flex justify-center">
         <div className="w-1/2 flex justify-around mt-10">
           <CustomButton secondary={false} onClick={getRandomCart} text="Crear Carrito" disabled={shoppingCart != null}/>
           <CustomButton secondary onClick={() => { router.push('/checkout') }} text="Finalizar Compra" disabled={!shoppingCart}/>
         </div>
       </div>
-
-      <div className="w-1/3">
-        {
-          showCart && <ShoppingCartProducts />
-        }
-      </div>
-
     </div>
   );
 }

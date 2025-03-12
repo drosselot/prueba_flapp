@@ -68,7 +68,7 @@ export default function Checkout() {
         </div>
 
         <div className="w-2/5 ">
-          <ShoppingCartProducts/>
+          <ShoppingCartProducts />
         </div>
       </div>
 
