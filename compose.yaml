@@ -9,6 +9,7 @@ services:
     working_dir: /flapp/app
     volumes:
       - ./flapp_app:/flapp/app
+      - ./flapp_app/.next:/flapp/app/.next
     environment:
       - NEXT_PUBLIC_API_URL=${APP_NEXT_PUBLIC_API_URL}
 
