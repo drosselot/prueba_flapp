@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  basePath: '/flapp'
 };
 
 export default nextConfig;

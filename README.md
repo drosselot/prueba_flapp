@@ -42,9 +42,25 @@
     APP_NEXT_PUBLIC_API_URL=<URL DE CONEXIÓN A LA API> (para deploy en local es http://localhost:<API_PORT>/api)
    ```
 
-3. Comenzar el daemon de docker. Si se cuenta con Docker Desktop, es necesario iniciar la aplicación de escritorio e iniciar sesión. En otro caso seguir la documentación: (https://docs.docker.com/engine/daemon/start/)
+3. (Solo en caso de tener poco nivel de CPU) Descomentar en compose.yaml la línea 6 y comentar la linea 5:
+   
+   ```
+      #   command: sh -c "npm install && npm run build && npm run start"
+         command: sh -c "npm run build"
+   ```
 
-4. Levantar la aplicación con docker compose desde el root del proyecto (en caso de querer correr en background agregar --detach):
+    Luego correr en `/flapp_api` (será necesario tener npm instalado):
+   ```sh
+   npm install
+   npm run build
+   ```
+
+   Esto es necesario ya que el build de la aplicación es consume mucha CPU y puede dejar paralizada una instancia.
+
+
+4. Comenzar el daemon de docker. Si se cuenta con Docker Desktop, es necesario iniciar la aplicación de escritorio e iniciar sesión. En otro caso seguir la documentación: (https://docs.docker.com/engine/daemon/start/)
+
+5. Levantar la aplicación con docker compose desde el root del proyecto (en caso de querer correr en background agregar --detach):
    ```sh
    docker compose up --build
    ```
