@@ -16,7 +16,7 @@ const ShoppingCartProducts = (props: {fixedHeight?: boolean}) => {
   const loadingCart = shoppingCart == null;
 
   return (
-    <motion.div initial={{scale: 0}} animate={{scale: 1}} className={"flex flex-col mt-10 rounded-md p-5 shadow-lg border border-neutral-200 mb-20 " + (fixedHeight && (" h-130 overflow-y-scroll"))}>
+    <motion.div initial={{scale: 0}} animate={{scale: 1}} className={"flex flex-col mt-10 rounded-md p-5 shadow-lg border border-neutral-200 " + (fixedHeight && (" h-130 overflow-y-scroll"))}>
       {
         loadingCart ? (
           <div className="flex flex-row">

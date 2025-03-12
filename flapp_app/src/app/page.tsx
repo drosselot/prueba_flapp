@@ -42,7 +42,7 @@ export default function Home() {
       </div>
 
       <div className="w-full flex justify-center">
-        <div className="w-1/2 flex justify-around mt-10">
+        <div className="w-1/2 flex justify-around mt-10 mb-30">
           <CustomButton secondary={false} onClick={getRandomCart} text="Crear Carrito" disabled={shoppingCart != null}/>
           <CustomButton secondary onClick={() => { router.push('/checkout') }} text="Finalizar Compra" disabled={!shoppingCart}/>
         </div>
