@@ -1,8 +1,8 @@
 # Documentación prueba flapp
 
 ## Aplicación levantada en AWS EC2
-- Web App: http://ec2-18-118-82-37.us-east-2.compute.amazonaws.com/
-- Api: http://ec2-18-118-82-37.us-east-2.compute.amazonaws.com/api
+- Web App: http://ec2-18-119-110-147.us-east-2.compute.amazonaws.com/
+- Endpoint api: http://ec2-18-119-110-147.us-east-2.compute.amazonaws.com/api_flapp/api/cart
 
 ## Tecnologías Utilizadas
 ### Backend
@@ -42,8 +42,8 @@
     APP_NEXT_PUBLIC_API_URL=<URL DE CONEXIÓN A LA API> (para deploy en local es http://localhost:<API_PORT>/api)
    ```
 
-3. (Solo en caso de tener poco nivel de CPU) Descomentar en compose.yaml la línea 6 y comentar la linea 5:
-   
+3. (Solo en caso de tener poco nivel de CPU o no querer volver a hacer build) Descomentar en compose.yaml la línea 6 y comentar la linea 5:
+
    ```
       #   command: sh -c "npm install && npm run build && npm run start"
          command: sh -c "npm run build"
